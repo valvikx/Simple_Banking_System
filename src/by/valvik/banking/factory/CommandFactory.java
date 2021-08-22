@@ -1,48 +1,35 @@
 package by.valvik.banking.factory;
 
-import by.valvik.banking.command.ICommand;
-import by.valvik.banking.command.ICommandType;
+import by.valvik.banking.command.Command;
 import by.valvik.banking.command.impl.*;
+import by.valvik.banking.constant.ClientCommand;
+import by.valvik.banking.constant.UserCommand;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public final class CommandFactory {
+import static java.util.Map.of;
 
-    private static final Map<ICommandType, ICommand> COMMAND_MAP = new HashMap<>() {
+public class CommandFactory {
 
-        {
+    private final Map<Enum<?>, Command> map;
 
-            put(AuthCommand.CREATE_ACCOUNT, new CardCreateCommand());
+    public CommandFactory() {
 
-            put(AuthCommand.LOG_IN, new LoginCommand());
-
-            put(AuthCommand.EXIT, new ExitCommand());
-
-            put(ClientCommand.BALANCE, new BalanceCommand());
-
-            put(ClientCommand.ADD_INCOME, new IncomeCommand());
-
-            put(ClientCommand.DO_TRANSFER, new TransferCommand());
-
-            put(ClientCommand.CLOSE_ACCOUNT, new CloseAccountCommand());
-
-            put(ClientCommand.LOG_OUT, new LogoutCommand());
-
-            put(ClientCommand.EXIT, new ExitCommand());
-
-        }
-
-    };
-
-    public static ICommand getCommand(ICommandType command) {
-
-        return COMMAND_MAP.get(command);
+        map = of(UserCommand.CREATE_ACCOUNT, new CardCreateCommand(),
+                 UserCommand.LOG_IN, new LoginCommand(),
+                 UserCommand.EXIT, new ExitCommand(),
+                 ClientCommand.BALANCE, new BalanceCommand(),
+                 ClientCommand.ADD_INCOME, new IncomeCommand(),
+                 ClientCommand.DO_TRANSFER, new TransferCommand(),
+                 ClientCommand.CLOSE_ACCOUNT, new CloseAccountCommand(),
+                 ClientCommand.LOG_OUT, new LogoutCommand(),
+                 ClientCommand.EXIT, new ExitCommand());
 
     }
 
-    private CommandFactory() {
+    public Command getCommand(Enum<?> command) {
 
+        return map.get(command);
 
     }
 

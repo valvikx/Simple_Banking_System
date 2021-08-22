@@ -1,7 +1,7 @@
 package by.valvik.banking.view.impl;
 
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.constant.Param;
 import by.valvik.banking.view.Page;
 
 public class CardPage implements Page {
@@ -13,11 +13,11 @@ public class CardPage implements Page {
 
         System.out.println("Your card number:");
 
-        System.out.println(holder.get(Params.CARD_NUMBER));
+        System.out.println(holder.get(Param.CARD_NUMBER));
 
         System.out.println("Your card PIN:");
 
-        System.out.println(holder.get(Params.PIN));
+        System.out.println(holder.get(Param.PIN));
 
         System.out.println();
 

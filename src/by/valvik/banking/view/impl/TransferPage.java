@@ -1,7 +1,7 @@
 package by.valvik.banking.view.impl;
 
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.constant.Param;
 import by.valvik.banking.view.Page;
 
 import java.util.Scanner;
@@ -19,7 +19,7 @@ public class TransferPage implements Page {
 
         String cardNumber = scanner.nextLine().trim();
 
-        holder.add(Params.CARD_NUMBER, cardNumber);
+        holder.add(Param.CARD_NUMBER, cardNumber);
 
     }
 

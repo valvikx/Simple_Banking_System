@@ -2,27 +2,29 @@ package by.valvik.banking.view;
 
 import by.valvik.banking.view.impl.*;
 
-public final class Pages {
+public enum Pages {
 
-    public static final Page AUTHORIZATION_PAGE = new AuthorizationPage();
+    AUTHORIZATION(new UserPage()),
+    CLIENT(new ClientPage()),
+    CARD(new CardPage()),
+    LOGIN(new LoginPage()),
+    INFO(new InfoPage()),
+    BALANCE(new BalancePage()),
+    INCOME(new IncomePage()),
+    TRANSFER(new TransferPage()),
+    TRANSFER_MONEY_PAGE(new TransferMoneyPage());
 
-    public static final Page CLIENT_PAGE = new ClientPage();
+    private final Page page;
 
-    public static final Page CARD_PAGE = new CardPage();
+    Pages(Page page) {
 
-    public static final Page LOGIN_PAGE = new LoginPage();
+        this.page = page;
 
-    public static final Page INFO_PAGE = new InfoPage();
+    }
 
-    public static final Page BALANCE_PAGE = new BalancePage();
+    public Page getPage() {
 
-    public static final Page INCOME_PAGE = new IncomePage();
-
-    public static final Page TRANSFER_PAGE = new TransferPage();
-
-    public static final Page TRANSFER_MONEY_PAGE = new TransferMoneyPage();
-
-    private Pages() {
+        return page;
 
     }
 

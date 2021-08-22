@@ -1,43 +1,60 @@
 package by.valvik.banking.command.impl;
 
-import by.valvik.banking.dao.ClientDao;
+import by.valvik.banking.command.Command;
+import by.valvik.banking.context.Holder;
 import by.valvik.banking.domain.Card;
 import by.valvik.banking.domain.Client;
-import by.valvik.banking.exception.AppException;
-import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.exception.ServiceException;
+import by.valvik.banking.service.ClientService;
+import by.valvik.banking.service.impl.ClientServiceImpl;
 import by.valvik.banking.view.Page;
-import by.valvik.banking.view.Pages;
 
-public class LoginCommand extends AbstractCommand {
+import static by.valvik.banking.constant.Param.*;
+import static by.valvik.banking.view.Pages.INFO;
+import static by.valvik.banking.view.Pages.LOGIN;
+
+public class LoginCommand implements Command {
+
+    private static final String YOU_HAVE_SUCCESSFULLY_LOGGED_IN = "You have successfully logged in!";
+
+    private final ClientService clientService;
+
+    public LoginCommand() {
+
+        clientService = ClientServiceImpl.getInstance();
+
+    }
 
     @Override
-    public Page execute(Holder holder) throws AppException {
+    public Page execute(Holder holder) {
 
-        Page loginPage = Pages.LOGIN_PAGE;
+        Page loginPage = LOGIN.getPage();
 
         loginPage.display(holder);
 
-        String cardNumber = holder.get(Params.CARD_NUMBER);
+        String cardNumber = holder.get(CARD_NUMBER);
 
-        String pin = holder.get(Params.PIN);
+        String pin = holder.get(PIN);
 
         Card card = new Card(cardNumber, pin);
 
-        String dbName = holder.get(Params.DB_NAME);
+        try {
 
-        ClientDao dbClientDao = getDao(dbName);
+            Client client = clientService.get(card);
 
-        Client client = dbClientDao.getClient(card)
-                             .orElseThrow(() -> new AppException("Wrong card number or PIN!"));
+            holder.setClient(client);
 
-        holder.setClient(client);
+            holder.setAuthorize(true);
 
-        holder.setAuthorize(true);
+            holder.add(MESSAGE, YOU_HAVE_SUCCESSFULLY_LOGGED_IN);
 
-        holder.add(Params.MESSAGE, "You have successfully logged in!");
+        } catch (ServiceException e) {
 
-        return Pages.INFO_PAGE;
+            holder.add(MESSAGE, e.getMessage());
+
+        }
+
+        return INFO.getPage();
 
     }
 

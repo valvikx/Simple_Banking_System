@@ -1,6 +1,6 @@
 package by.valvik.banking.dao.connection;
 
-import by.valvik.banking.exception.AppException;
+import by.valvik.banking.exception.DaoException;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
@@ -22,11 +22,11 @@ public class DbConnection {
 
         dataSource = new SQLiteDataSource();
 
+        dataSource.setUrl(JDBC_URL.formatted(getValue(DB_NAME)));
+
     }
 
-    public Connection getConnection() throws AppException {
-
-        dataSource.setUrl(JDBC_URL.formatted(getValue(DB_NAME)));
+    public Connection get() throws DaoException {
 
         try {
 
@@ -34,13 +34,13 @@ public class DbConnection {
 
         } catch (SQLException e) {
 
-            throw new AppException(e.getMessage());
+            throw new DaoException(e.getMessage());
 
         }
 
     }
 
-    public void releaseConnection(Connection connection) throws AppException {
+    public void releaseConnection(Connection connection) throws DaoException {
 
         if (connection != null) {
 
@@ -50,7 +50,7 @@ public class DbConnection {
 
             } catch (SQLException e) {
 
-                throw new AppException(e.getMessage());
+                throw new DaoException(e.getMessage());
 
             }
 

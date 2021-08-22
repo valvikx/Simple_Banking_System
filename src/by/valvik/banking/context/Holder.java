@@ -1,5 +1,6 @@
 package by.valvik.banking.context;
 
+import by.valvik.banking.constant.Param;
 import by.valvik.banking.domain.Client;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.Map;
 
 public class Holder {
 
-    private final Map<String, String> attributes;
+    private final Map<Param, String> attributes;
 
     private boolean isAuthorize;
 
@@ -15,21 +16,21 @@ public class Holder {
 
     private Client client;
 
-    private Holder() {
+    public Holder() {
 
         attributes = new HashMap<>();
 
     }
 
-    public void add(String name, String value) {
+    public void add(Param param, String value) {
 
-        attributes.put(name, value);
+        attributes.put(param, value);
 
     }
 
-    public String get(String name) {
+    public String get(Param param) {
 
-        return attributes.getOrDefault(name, null);
+        return attributes.get(param);
 
     }
 

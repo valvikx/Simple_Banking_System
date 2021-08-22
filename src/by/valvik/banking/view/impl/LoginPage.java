@@ -1,29 +1,40 @@
 package by.valvik.banking.view.impl;
 
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.view.Console;
 import by.valvik.banking.view.Page;
 
-import java.util.Scanner;
+import static by.valvik.banking.constant.Param.CARD_NUMBER;
+import static by.valvik.banking.constant.Param.PIN;
 
 public class LoginPage implements Page {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private static final String ENTER_YOUR_CARD_NUMBER = "Enter your card number:";
+
+    private static final String ENTER_YOUR_PIN = "Enter your PIN:";
+
+    private final Console console;
+
+    public LoginPage() {
+
+        console = Console.getInstance();
+
+    }
 
     @Override
     public void display(Holder holder) {
 
-        System.out.println("Enter your card number:");
+        System.out.println(ENTER_YOUR_CARD_NUMBER);
 
-        String cardNumber = scanner.nextLine().trim();
+        String cardNumber = console.getScanner().nextLine().trim();
 
-        holder.add(Params.CARD_NUMBER, cardNumber);
+        holder.add(CARD_NUMBER, cardNumber);
 
-        System.out.println("Enter your PIN:");
+        System.out.println(ENTER_YOUR_PIN);
 
-        String pin = scanner.nextLine().trim();
+        String pin = console.getScanner().nextLine().trim();
 
-        holder.add(Params.PIN, pin);
+        holder.add(PIN, pin);
 
         System.out.println();
 

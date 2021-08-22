@@ -6,6 +6,12 @@ import static java.lang.Math.abs;
 
 public record Card(String number, String pin, int balance) {
 
+    public Card(String number, String pin) {
+
+        this(number, pin, 0);
+
+    }
+
     @Override
     public boolean equals(Object o) {
 

@@ -1,47 +1,45 @@
 package by.valvik.banking;
 
-import by.valvik.banking.command.ICommandType;
-import by.valvik.banking.command.impl.AuthCommand;
-import by.valvik.banking.command.impl.ClientCommand;
+import by.valvik.banking.constant.UserCommand;
+import by.valvik.banking.constant.ClientCommand;
 import by.valvik.banking.controller.Controller;
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
 import by.valvik.banking.view.Page;
-import by.valvik.banking.view.Pages;
+
+import static by.valvik.banking.view.Pages.AUTHORIZATION;
+import static by.valvik.banking.view.Pages.CLIENT;
 
 public class Application {
 
-    private final Controller controller = new Controller();
+    public void run() {
 
-    private final Holder holder = new Holder();
+        Controller controller = new Controller();
 
-    public void run(String[] args) {
+        Holder holder = new Holder();
 
         Page page;
 
-        ICommandType[] commandTypes;
-
-        holder.add(Params.DB_NAME, args[1]);
+        Enum<?>[] commands;
 
         do {
 
             if (holder.isAuthorize()) {
 
-                page = Pages.CLIENT_PAGE;
+                page = CLIENT.getPage();
 
-                commandTypes = ClientCommand.values();
+                commands = ClientCommand.values();
 
             } else {
 
-                page = Pages.AUTHORIZATION_PAGE;
+                page = AUTHORIZATION.getPage();
 
-                commandTypes = AuthCommand.values();
+                commands = UserCommand.values();
 
             }
 
             page.display(holder);
 
-            controller.execute(holder, commandTypes);
+            controller.execute(holder, commands);
 
         } while (!holder.isExit());
 

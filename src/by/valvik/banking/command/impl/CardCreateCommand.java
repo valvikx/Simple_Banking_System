@@ -3,9 +3,9 @@ package by.valvik.banking.command.impl;
 import by.valvik.banking.dao.impl.ClientDaoImpl;
 import by.valvik.banking.domain.Card;
 import by.valvik.banking.domain.Client;
-import by.valvik.banking.exception.AppException;
+import by.valvik.banking.exception.DaoException;
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.constant.Param;
 import by.valvik.banking.util.Cards;
 import by.valvik.banking.view.Page;
 import by.valvik.banking.view.Pages;
@@ -13,21 +13,21 @@ import by.valvik.banking.view.Pages;
 public class CardCreateCommand extends AbstractCommand {
 
     @Override
-    public Page execute(Holder holder) throws AppException {
+    public Page execute(Holder holder) throws DaoException {
 
         String cardNumber = Cards.generateNumber();
 
-        holder.add(Params.CARD_NUMBER, cardNumber);
+        holder.add(Param.CARD_NUMBER, cardNumber);
 
         String pin = Cards.generatePin();
 
-        holder.add(Params.PIN, pin);
+        holder.add(Param.PIN, pin);
 
         Card card = new Card(cardNumber, pin);
 
         Client client = new Client(card);
 
-        String dbName = holder.get(Params.DB_NAME);
+        String dbName = holder.get(Param.DB_NAME);
 
         ClientDaoImpl dbDao = getDao(dbName);
 
@@ -35,7 +35,7 @@ public class CardCreateCommand extends AbstractCommand {
 
         dbDao.saveClient(client);
 
-        return Pages.CARD_PAGE;
+        return Pages.CARD;
 
     }
 

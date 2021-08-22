@@ -1,7 +1,7 @@
 package by.valvik.banking.view.impl;
 
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.context.Params;
+import by.valvik.banking.constant.Param;
 import by.valvik.banking.view.Page;
 
 import java.util.Scanner;
@@ -27,7 +27,7 @@ public class ClientPage implements Page {
 
         String commandItem = scanner.nextLine();
 
-        holder.add(Params.ITEM, commandItem);
+        holder.add(Param.COMMAND_OPTION, commandItem);
 
         System.out.println();
 
