@@ -9,7 +9,7 @@ import by.valvik.banking.view.Page;
 import static by.valvik.banking.constant.Param.COMMAND_OPTION;
 import static by.valvik.banking.view.Pages.INFO;
 
-public class Controller {
+public record Controller(CommandFactory commandFactory) {
 
     private static final String INVALID_COMMAND = "Invalid command!";
 
@@ -31,7 +31,7 @@ public class Controller {
 
                 Enum<?> commandType = commands[commandOption];
 
-                Command command = CommandFactory.getCommand(commandType);
+                Command command = commandFactory.getCommand(commandType);
 
                 page = command.execute(holder);
 

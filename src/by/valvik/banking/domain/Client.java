@@ -2,29 +2,23 @@ package by.valvik.banking.domain;
 
 public record Client(Card card) {
 
-    public int getBalance() {
-
-        return card.balance();
-
-    }
-
-    public Card addToBalance(int value) {
+    public Card addToBalance(int amount) {
 
         int balance = card.balance();
 
-        balance += value;
+        balance += amount;
 
         return new Card(card.number(), card.pin(), balance);
 
     }
 
-    public Card writeOffBalance(int value) {
+    public Card writeOffBalance(int amount) {
 
         int balance = card.balance();
 
-        if (card.balance() >= value) {
+        if (card.balance() >= amount) {
 
-            balance -= value;
+            balance -= amount;
 
             return new Card(card.number(), card.pin(), balance);
 

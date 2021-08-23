@@ -18,6 +18,8 @@ public class ClientServiceImpl implements ClientService {
 
     private static final String WRONG_CARD_NUMBER_OR_PIN = "Wrong card number or PIN!";
 
+    private static final String SUCH_A_CARD_DOES_NOT_EXIST = "Such a card does not exist!";
+
     private final ClientDao clientDao;
 
     private final DbConnection dbConnection;
@@ -37,6 +39,57 @@ public class ClientServiceImpl implements ClientService {
 
             return clientDao.get(connection, card.hashCode())
                             .orElseThrow(() -> new ServiceException(WRONG_CARD_NUMBER_OR_PIN));
+
+        } catch (DaoException e) {
+
+            throw new ServiceException(SUCH_A_CARD_DOES_NOT_EXIST);
+
+        } catch (SQLException e) {
+
+            throw new ServiceException(e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public void save(Client client) throws ServiceException {
+
+        try (Connection connection = dbConnection.get()) {
+
+            clientDao.save(connection, client);
+
+        } catch (DaoException | SQLException e) {
+
+            throw new ServiceException(e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public void delete(Client client) throws ServiceException {
+
+        try (Connection connection = dbConnection.get()) {
+
+            clientDao.delete(connection, client.hashCode());
+
+        } catch (DaoException | SQLException e) {
+
+            throw new ServiceException(e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public void deposit(Client client, int amount) throws ServiceException {
+
+        try (Connection connection = dbConnection.get()) {
+
+            Card card = client.addToBalance(amount);
+
+            clientDao.updateBalance(connection, card.balance());
 
         } catch (DaoException | SQLException e) {
 

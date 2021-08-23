@@ -10,8 +10,6 @@ public class Holder {
 
     private final Map<Param, String> attributes;
 
-    private boolean isAuthorize;
-
     private boolean isExit;
 
     private Client client;
@@ -31,18 +29,6 @@ public class Holder {
     public String get(Param param) {
 
         return attributes.get(param);
-
-    }
-
-    public boolean isAuthorize() {
-
-        return isAuthorize;
-
-    }
-
-    public void setAuthorize(boolean authorize) {
-
-        isAuthorize = authorize;
 
     }
 

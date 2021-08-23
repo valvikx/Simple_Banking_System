@@ -10,16 +10,21 @@ import by.valvik.banking.service.impl.ClientServiceImpl;
 import by.valvik.banking.view.Page;
 
 import static by.valvik.banking.constant.Param.*;
+import static by.valvik.banking.util.Cards.generateNumber;
+import static by.valvik.banking.util.Cards.generatePin;
 import static by.valvik.banking.view.Pages.INFO;
-import static by.valvik.banking.view.Pages.LOGIN;
 
-public class LoginCommand implements Command {
+public class CreateAccountCommand implements Command {
 
-    private static final String YOU_HAVE_SUCCESSFULLY_LOGGED_IN = "You have successfully logged in!";
+    public static final String YOUR_CARD_HAS_BEEN_CREATED = """
+        Your card has been created.
+        1) Card number: %s
+        2) Card PIN: %s
+        """;
 
     private final ClientService clientService;
 
-    public LoginCommand() {
+    public CreateAccountCommand() {
 
         clientService = ClientServiceImpl.getInstance();
 
@@ -28,23 +33,17 @@ public class LoginCommand implements Command {
     @Override
     public Page execute(Holder holder) {
 
-        Page loginPage = LOGIN.getPage();
+        String cardNumber = generateNumber();
 
-        loginPage.display(holder);
+        String pin = generatePin();
 
-        String cardNumber = holder.get(CARD_NUMBER);
-
-        String pin = holder.get(PIN);
-
-        Card card = new Card(cardNumber, pin);
+        Client client = new Client(new Card(cardNumber, pin));
 
         try {
 
-            Client client = clientService.get(card);
+            clientService.save(client);
 
-            holder.setClient(client);
-
-            holder.add(MESSAGE, YOU_HAVE_SUCCESSFULLY_LOGGED_IN);
+            holder.add(MESSAGE, YOUR_CARD_HAS_BEEN_CREATED.formatted(cardNumber, pin));
 
         } catch (ServiceException e) {
 

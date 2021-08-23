@@ -10,14 +10,10 @@ public interface ClientDao {
 
     Optional<Client> get(Connection connection, int id) throws DaoException;
 
-    Optional<Client> get(Connection connection, String cardNumber) throws DaoException;
-
     void save(Connection connection, Client client) throws DaoException;
-
-    void update(Connection connection, Client client) throws DaoException;
 
     void delete(Connection connection, int id) throws DaoException;
 
-    void transferToClient(Client client, Client transferClient, int value) throws DaoException;
+    void updateBalance(Connection connection, int balance) throws DaoException;
 
 }

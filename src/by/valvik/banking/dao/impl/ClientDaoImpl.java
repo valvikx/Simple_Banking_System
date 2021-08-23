@@ -25,16 +25,11 @@ public class ClientDaoImpl implements ClientDao {
                 FROM cards
                     WHERE id = ?""";
 
-    private static final String GET_BY_NUMBER = """
-            SELECT number, pin, balance
-                FROM cards
-                    WHERE number = ?""";
-
     private static final String INSERT = "INSERT INTO cards(id, number, pin) VALUES (?, ?, ?)";
 
-    private static final String UPDATE = """
+    private static final String UPDATE_BALANCE = """
             UPDATE cards
-                SET number = ?, pin = ?, balance = ?
+                SET balance = ?
                     WHERE id = ?""";
 
     private static final String DELETE = "DELETE FROM cards WHERE id = ?";
@@ -67,21 +62,6 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Optional<Client> get(Connection connection, String cardNumber) throws DaoException {
-
-        try {
-
-            return executor.execute(connection, GET_BY_NUMBER, clientMapper, cardNumber);
-
-        } catch (SQLException e) {
-
-            throw new DaoException(e.getMessage());
-
-        }
-
-    }
-
-    @Override
     public void save(Connection connection, Client client) throws DaoException {
 
         try {
@@ -95,24 +75,6 @@ public class ClientDaoImpl implements ClientDao {
             throw new DaoException(e.getMessage());
 
         }
-
-    }
-
-    @Override
-    public void update(Connection connection, Client client) throws DaoException {
-
-        try {
-
-            executor.execute(connection, UPDATE, client.card().number(),
-                                                 client.card().pin(),
-                                                 client.card().balance());
-
-        } catch (SQLException e) {
-
-            throw new DaoException(e.getMessage());
-
-        }
-
 
     }
 
@@ -132,29 +94,13 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void transferToClient(Client client, Client transferClient, int value) throws DaoException {
+    public void updateBalance(Connection connection, int balance) throws DaoException {
 
         try {
 
-            if (!client.writeOffBalance(value)) {
-
-                throw new DaoException("Not enough money!");
-
-            }
-
-            transferClient.addToBalance(value);
-
-            executor.executeTransaction(UPDATE,
-                                        new Object[] { client.getBalance(),
-                                                       client.getCard().hashCode() },
-                                        new Object[] { transferClient.getBalance(),
-                                                       transferClient.getCard().hashCode() });
+            executor.execute(connection, UPDATE_BALANCE, balance);
 
         } catch (SQLException e) {
-
-            transferClient.writeOffBalance(value);
-
-            client.addToBalance(value);
 
             throw new DaoException(e.getMessage());
 

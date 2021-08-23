@@ -9,9 +9,9 @@ import static by.valvik.banking.constant.Param.PIN;
 
 public class LoginPage implements Page {
 
-    private static final String ENTER_YOUR_CARD_NUMBER = "Enter your card number:";
+    private static final String ENTER_YOUR_CARD_NUMBER = "Enter your card number: ";
 
-    private static final String ENTER_YOUR_PIN = "Enter your PIN:";
+    private static final String ENTER_YOUR_PIN = "Enter your PIN: ";
 
     private final Console console;
 

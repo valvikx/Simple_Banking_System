@@ -26,39 +26,6 @@ public class Executor {
 
     }
 
-    public void executeTransaction(String sql, Object[]... args) throws SQLException {
-
-        if (connection.getAutoCommit()) {
-
-            connection.setAutoCommit(false);
-
-        }
-
-        try (PreparedStatement statementOne = connection.prepareStatement(sql);
-             PreparedStatement statementTwo = connection.prepareStatement(sql)) {
-
-            setParams(statementOne, args[0]);
-
-            statementOne.executeUpdate();
-
-            setParams(statementTwo, args[1]);
-
-            statementTwo.executeUpdate();
-
-            connection.commit();
-
-        } catch (SQLException e) {
-
-            connection.rollback();
-
-        } finally {
-
-            connection.setAutoCommit(true);
-
-        }
-
-    }
-
     public <T> T execute(Connection connection, String sql, Mapper<T> mapper, Object... args) throws SQLException {
 
         try (final PreparedStatement statement = connection.prepareStatement(sql)) {

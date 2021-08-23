@@ -16,8 +16,6 @@ public class LogoutCommand implements Command {
 
         holder.setClient(null);
 
-        holder.setAuthorize(false);
-
         holder.add(MESSAGE, YOU_HAVE_SUCCESSFULLY_LOGGED_OUT);
 
         return INFO.getPage();

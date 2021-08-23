@@ -15,7 +15,7 @@ public class CommandFactory {
 
     public CommandFactory() {
 
-        map = of(UserCommand.CREATE_ACCOUNT, new CardCreateCommand(),
+        map = of(UserCommand.CREATE_ACCOUNT, new CreateAccountCommand(),
                  UserCommand.LOG_IN, new LoginCommand(),
                  UserCommand.EXIT, new ExitCommand(),
                  ClientCommand.BALANCE, new BalanceCommand(),

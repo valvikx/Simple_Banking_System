@@ -1,23 +1,24 @@
 package by.valvik.banking.command.impl;
 
-import by.valvik.banking.exception.DaoException;
+import by.valvik.banking.command.Command;
 import by.valvik.banking.context.Holder;
-import by.valvik.banking.constant.Param;
 import by.valvik.banking.view.Page;
-import by.valvik.banking.view.Pages;
 
-public class ExitCommand extends AbstractCommand {
+import static by.valvik.banking.constant.Param.MESSAGE;
+import static by.valvik.banking.view.Pages.INFO;
+
+public class ExitCommand implements Command {
+
+    private static final String BYE = "Bye!";
 
     @Override
-    public Page execute(Holder holder) throws DaoException {
-
-        realiseConnection();
+    public Page execute(Holder holder) {
 
         holder.setExit(true);
 
-        holder.add(Param.MESSAGE, "Bye!");
+        holder.add(MESSAGE, BYE);
 
-        return Pages.INFO;
+        return INFO.getPage();
 
     }
 

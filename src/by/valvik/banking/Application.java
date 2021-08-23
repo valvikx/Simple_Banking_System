@@ -4,16 +4,21 @@ import by.valvik.banking.constant.UserCommand;
 import by.valvik.banking.constant.ClientCommand;
 import by.valvik.banking.controller.Controller;
 import by.valvik.banking.context.Holder;
+import by.valvik.banking.factory.CommandFactory;
 import by.valvik.banking.view.Page;
 
-import static by.valvik.banking.view.Pages.AUTHORIZATION;
+import java.util.Objects;
+
+import static by.valvik.banking.view.Pages.USER;
 import static by.valvik.banking.view.Pages.CLIENT;
 
 public class Application {
 
     public void run() {
 
-        Controller controller = new Controller();
+        CommandFactory commandFactory = new CommandFactory();
+
+        Controller controller = new Controller(commandFactory);
 
         Holder holder = new Holder();
 
@@ -23,7 +28,7 @@ public class Application {
 
         do {
 
-            if (holder.isAuthorize()) {
+            if (Objects.nonNull(holder.getClient())) {
 
                 page = CLIENT.getPage();
 
@@ -31,7 +36,7 @@ public class Application {
 
             } else {
 
-                page = AUTHORIZATION.getPage();
+                page = USER.getPage();
 
                 commands = UserCommand.values();
 

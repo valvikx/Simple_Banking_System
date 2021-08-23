@@ -1,21 +1,28 @@
 package by.valvik.banking.view.impl;
 
-import by.valvik.banking.context.Holder;
 import by.valvik.banking.constant.Param;
+import by.valvik.banking.context.Holder;
+import by.valvik.banking.view.Console;
 import by.valvik.banking.view.Page;
-
-import java.util.Scanner;
 
 public class IncomePage implements Page {
 
-    private final Scanner scanner = new Scanner(System.in);
+    public static final String ENTER_INCOME = "Enter income: ";
+
+    private final Console console;
+
+    public IncomePage() {
+
+        console = Console.getInstance();
+
+    }
 
     @Override
     public void display(Holder holder) {
 
-        System.out.println("Enter income:");
+        System.out.println(ENTER_INCOME);
 
-        String income = scanner.nextLine().trim();
+        String income = console.getScanner().nextLine().trim();
 
         holder.add(Param.INCOME, income);
 
