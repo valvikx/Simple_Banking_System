@@ -14,4 +14,6 @@ public interface ClientService {
 
     void deposit(Client client, int amount) throws ServiceException;
 
+    void transfer(Client source, Client target, int amount) throws ServiceException;
+
 }

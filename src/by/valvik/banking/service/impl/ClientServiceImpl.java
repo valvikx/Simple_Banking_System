@@ -8,6 +8,7 @@ import by.valvik.banking.domain.Client;
 import by.valvik.banking.exception.DaoException;
 import by.valvik.banking.exception.ServiceException;
 import by.valvik.banking.service.ClientService;
+import by.valvik.banking.service.TransactionService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,15 +21,21 @@ public class ClientServiceImpl implements ClientService {
 
     private static final String SUCH_A_CARD_DOES_NOT_EXIST = "Such a card does not exist!";
 
-    private final ClientDao clientDao;
+    private static final String NOT_ENOUGH_MONEY = "Not enough money!";
 
     private final DbConnection dbConnection;
 
+    private final ClientDao clientDao;
+
+    private final TransactionService transactionService;
+
     private ClientServiceImpl() {
+
+        dbConnection = DbConnection.getInstance();
 
         clientDao = ClientDaoImpl.getInstance();
 
-        dbConnection = DbConnection.getInstance();
+        transactionService = TransactionServiceImpl.getInstance();
 
     }
 
@@ -96,6 +103,26 @@ public class ClientServiceImpl implements ClientService {
             throw new ServiceException(e.getMessage());
 
         }
+
+    }
+
+    @Override
+    public void transfer(Client source, Client target, int amount) throws ServiceException {
+
+        Card sourceCard = source.card();
+
+        Card updatedSourceCard = source.writeOffBalance(amount);
+
+        if (updatedSourceCard.balance() == sourceCard.balance()) {
+
+            throw new ServiceException(NOT_ENOUGH_MONEY);
+
+        }
+
+        Card updatedTargetCard = target.addToBalance(amount);
+
+        
+
 
     }
 

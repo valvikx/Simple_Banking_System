@@ -1,10 +1,12 @@
 package by.valvik.banking.service;
 
-import by.valvik.banking.domain.Client;
+import by.valvik.banking.domain.Card;
 import by.valvik.banking.exception.ServiceException;
+
+import java.sql.Connection;
 
 public interface TransactionService {
 
-    void transfer(Client source, Client target, int amount) throws ServiceException;
+    void updateBalances(Connection connection, Card source, Card target) throws ServiceException;
 
 }

@@ -14,6 +14,6 @@ public interface ClientDao {
 
     void delete(Connection connection, int id) throws DaoException;
 
-    void updateBalance(Connection connection, int balance) throws DaoException;
+    void updateBalance(Connection connection, int balance, int id) throws DaoException;
 
 }

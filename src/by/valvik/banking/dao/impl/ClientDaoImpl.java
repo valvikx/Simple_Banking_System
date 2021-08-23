@@ -94,11 +94,11 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void updateBalance(Connection connection, int balance) throws DaoException {
+    public void updateBalance(Connection connection, int balance, int id) throws DaoException {
 
         try {
 
-            executor.execute(connection, UPDATE_BALANCE, balance);
+            executor.execute(connection, UPDATE_BALANCE, balance, id);
 
         } catch (SQLException e) {
 
