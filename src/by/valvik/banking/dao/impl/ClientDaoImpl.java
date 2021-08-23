@@ -14,12 +14,6 @@ public class ClientDaoImpl implements ClientDao {
 
     private static final ClientDao INSTANCE = new ClientDaoImpl();
 
-    private static final String CREATE_TABLE = """
-       CREATE TABLE IF NOT EXISTS cards (id INTEGER NOT NULL,
-                                         number TEXT NOT NULL,
-                                         pin TEXT NOT NULL,
-                                         balance INTEGER DEFAULT 0);""";
-
     private static final String GET_BY_ID = """
             SELECT number, pin, balance
                 FROM cards
@@ -99,20 +93,6 @@ public class ClientDaoImpl implements ClientDao {
         try {
 
             executor.execute(connection, UPDATE_BALANCE, balance, id);
-
-        } catch (SQLException e) {
-
-            throw new DaoException(e.getMessage());
-
-        }
-
-    }
-
-    public void createTable(Connection connection) throws DaoException {
-
-        try {
-
-            executor.execute(connection, CREATE_TABLE);
 
         } catch (SQLException e) {
 

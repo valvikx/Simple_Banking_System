@@ -9,6 +9,7 @@ import by.valvik.banking.exception.DaoException;
 import by.valvik.banking.exception.ServiceException;
 import by.valvik.banking.service.ClientService;
 import by.valvik.banking.service.TransactionService;
+import by.valvik.banking.service.proxy.TransactionProxy;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -27,6 +28,8 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientDao clientDao;
 
+    private final TransactionProxy transactionProxy;
+
     private final TransactionService transactionService;
 
     private ClientServiceImpl() {
@@ -34,6 +37,8 @@ public class ClientServiceImpl implements ClientService {
         dbConnection = DbConnection.getInstance();
 
         clientDao = ClientDaoImpl.getInstance();
+
+        transactionProxy = TransactionProxy.getInstance();
 
         transactionService = TransactionServiceImpl.getInstance();
 
@@ -96,7 +101,7 @@ public class ClientServiceImpl implements ClientService {
 
             Card card = client.addToBalance(amount);
 
-            clientDao.updateBalance(connection, card.balance());
+            clientDao.updateBalance(connection, card.balance(), card.hashCode());
 
         } catch (DaoException | SQLException e) {
 
@@ -121,8 +126,17 @@ public class ClientServiceImpl implements ClientService {
 
         Card updatedTargetCard = target.addToBalance(amount);
 
-        
+        try (Connection connection = dbConnection.get()) {
 
+            TransactionService proxy = transactionProxy.getProxy(transactionService, connection);
+
+            proxy.updateBalances(connection, updatedSourceCard, updatedTargetCard);
+
+        } catch (DaoException | SQLException e) {
+
+            throw new ServiceException(e.getMessage());
+
+        }
 
     }
 
