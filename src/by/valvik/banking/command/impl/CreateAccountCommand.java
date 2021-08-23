@@ -17,9 +17,9 @@ import static by.valvik.banking.view.Pages.INFO;
 public class CreateAccountCommand implements Command {
 
     public static final String YOUR_CARD_HAS_BEEN_CREATED = """
-        Your card has been created.
-        1) Card number: %s
-        2) Card PIN: %s
+        Your card has been created:
+        >> Card number: %s
+        >> Card PIN: %s
         """;
 
     private final ClientService clientService;

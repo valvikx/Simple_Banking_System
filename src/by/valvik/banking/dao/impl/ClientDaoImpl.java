@@ -19,6 +19,11 @@ public class ClientDaoImpl implements ClientDao {
                 FROM cards
                     WHERE id = ?""";
 
+    private static final String GET_BY_CARD_NUMBER = """
+            SELECT number, pin, balance
+                FROM cards
+                    WHERE number = ?""";
+
     private static final String INSERT = "INSERT INTO cards(id, number, pin) VALUES (?, ?, ?)";
 
     private static final String UPDATE_BALANCE = """
@@ -46,6 +51,21 @@ public class ClientDaoImpl implements ClientDao {
         try {
 
             return executor.execute(connection, GET_BY_ID, clientMapper, id);
+
+        } catch (SQLException e) {
+
+            throw new DaoException(e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public Optional<Client> get(Connection connection, String cardNumber) throws DaoException {
+
+        try {
+
+            return executor.execute(connection, GET_BY_CARD_NUMBER, clientMapper, cardNumber);
 
         } catch (SQLException e) {
 

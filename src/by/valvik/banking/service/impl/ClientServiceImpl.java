@@ -13,6 +13,7 @@ import by.valvik.banking.service.proxy.TransactionProxy;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class ClientServiceImpl implements ClientService {
 
@@ -49,14 +50,18 @@ public class ClientServiceImpl implements ClientService {
 
         try (Connection connection = dbConnection.get()) {
 
-            return clientDao.get(connection, card.hashCode())
-                            .orElseThrow(() -> new ServiceException(WRONG_CARD_NUMBER_OR_PIN));
+            if (Objects.nonNull(card.pin())) {
 
-        } catch (DaoException e) {
+                return clientDao.get(connection, card.hashCode())
+                                .orElseThrow(() -> new ServiceException(WRONG_CARD_NUMBER_OR_PIN));
 
-            throw new ServiceException(SUCH_A_CARD_DOES_NOT_EXIST);
+            }
 
-        } catch (SQLException e) {
+            return clientDao.get(connection, card.number())
+                            .orElseThrow(() -> new ServiceException(SUCH_A_CARD_DOES_NOT_EXIST));
+
+
+        } catch (DaoException | SQLException e) {
 
             throw new ServiceException(e.getMessage());
 

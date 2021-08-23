@@ -11,6 +11,7 @@ import by.valvik.banking.view.Page;
 import by.valvik.banking.view.Pages;
 
 import static by.valvik.banking.constant.Param.MESSAGE;
+import static by.valvik.banking.view.Pages.INCOME;
 import static by.valvik.banking.view.Pages.INFO;
 
 public class IncomeCommand implements Command {
@@ -30,7 +31,7 @@ public class IncomeCommand implements Command {
     @Override
     public Page execute(Holder holder) {
 
-        Page incomePage = Pages.INCOME.getPage();
+        Page incomePage = INCOME.getPage();
 
         incomePage.display(holder);
 

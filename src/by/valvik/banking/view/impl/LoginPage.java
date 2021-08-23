@@ -9,9 +9,9 @@ import static by.valvik.banking.constant.Param.PIN;
 
 public class LoginPage implements Page {
 
-    private static final String ENTER_YOUR_CARD_NUMBER = "Enter your card number: ";
+    private static final String ENTER_YOUR_CARD_NUMBER = ">Enter your card number: ";
 
-    private static final String ENTER_YOUR_PIN = "Enter your PIN: ";
+    private static final String ENTER_YOUR_PIN = ">Enter your PIN: ";
 
     private final Console console;
 
@@ -24,19 +24,17 @@ public class LoginPage implements Page {
     @Override
     public void display(Holder holder) {
 
-        System.out.println(ENTER_YOUR_CARD_NUMBER);
+        System.out.print(ENTER_YOUR_CARD_NUMBER);
 
         String cardNumber = console.getScanner().nextLine().trim();
 
         holder.add(CARD_NUMBER, cardNumber);
 
-        System.out.println(ENTER_YOUR_PIN);
+        System.out.print(ENTER_YOUR_PIN);
 
         String pin = console.getScanner().nextLine().trim();
 
         holder.add(PIN, pin);
-
-        System.out.println();
 
     }
 

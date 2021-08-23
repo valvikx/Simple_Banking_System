@@ -9,10 +9,12 @@ import static by.valvik.banking.constant.Param.COMMAND_OPTION;
 public class UserPage implements Page {
 
     private static final String MENU = """
+        ******************** Simple Banking System ********************
+        ========================= User Menu ===========================
         1. Create an account
         2. Log into account
         0. Exit
-        """;
+        >>>\040""";
 
     private final Console console;
 
@@ -25,7 +27,7 @@ public class UserPage implements Page {
     @Override
     public void display(Holder holder) {
 
-        System.out.println(MENU);
+        System.out.print(MENU);
 
         String commandOption = console.getScanner().nextLine().trim();
 

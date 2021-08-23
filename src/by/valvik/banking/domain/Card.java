@@ -26,14 +26,15 @@ public record Card(String number, String pin, int balance) {
 
         if (!(o instanceof Card card)) return false;
 
-        return Objects.equals(number, card.number);
+        return Objects.equals(number, card.number) &&
+               Objects.equals(pin, card.pin);
 
     }
 
     @Override
     public int hashCode() {
 
-        return abs(hash(number));
+        return abs(hash(number, pin));
 
     }
 
