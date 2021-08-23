@@ -38,7 +38,7 @@ public class TransferCommand implements Command {
     @Override
     public Page execute(Holder holder) {
 
-        Client sourceClient = holder.getClient();
+        Client currentClient = holder.getClient();
 
         Page page = TRANSFER_CARD.getPage();
 
@@ -54,7 +54,7 @@ public class TransferCommand implements Command {
 
         }
 
-        if (Objects.equals(sourceClient.card().number(), targetCardNumber)) {
+        if (Objects.equals(currentClient.card().number(), targetCardNumber)) {
 
             holder.add(MESSAGE, CAN_NOT_TRANSFER_MONEY_TO_THE_SAME_ACCOUNT);
 
@@ -63,6 +63,8 @@ public class TransferCommand implements Command {
         }
 
         try {
+
+            Client sourceClient = clientService.get(currentClient.card());
 
             Client targetClient = clientService.get(new Card(targetCardNumber));
 

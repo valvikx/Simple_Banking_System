@@ -10,7 +10,7 @@ public class TransferCardPage implements Page {
 
     public static final String TRANSFER = """
         Transfer
-        Enter card number:\040""";
+        >Enter card number:\040""";
 
     private final Console console;
 
@@ -23,7 +23,7 @@ public class TransferCardPage implements Page {
     @Override
     public void display(Holder holder) {
 
-        System.out.println(TRANSFER);
+        System.out.print(TRANSFER);
 
         String cardNumber = console.getScanner().nextLine().trim();
 
