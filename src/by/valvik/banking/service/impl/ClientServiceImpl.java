@@ -1,7 +1,7 @@
 package by.valvik.banking.service.impl;
 
 import by.valvik.banking.dao.ClientDao;
-import by.valvik.banking.dao.connection.DbConnection;
+import by.valvik.banking.connection.DbConnection;
 import by.valvik.banking.dao.impl.ClientDaoImpl;
 import by.valvik.banking.domain.Card;
 import by.valvik.banking.domain.Client;

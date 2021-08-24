@@ -1,4 +1,4 @@
-package by.valvik.banking.dao.connection;
+package by.valvik.banking.connection;
 
 import by.valvik.banking.exception.DaoException;
 import org.sqlite.SQLiteDataSource;

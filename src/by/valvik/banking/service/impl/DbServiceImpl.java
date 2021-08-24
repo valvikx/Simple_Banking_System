@@ -1,7 +1,7 @@
 package by.valvik.banking.service.impl;
 
 import by.valvik.banking.dao.DbDao;
-import by.valvik.banking.dao.connection.DbConnection;
+import by.valvik.banking.connection.DbConnection;
 import by.valvik.banking.dao.impl.DbDaoImpl;
 import by.valvik.banking.exception.DaoException;
 import by.valvik.banking.exception.ServiceException;
