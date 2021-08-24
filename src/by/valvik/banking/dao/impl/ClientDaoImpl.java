@@ -1,6 +1,8 @@
 package by.valvik.banking.dao.impl;
 
+import by.valvik.banking.connection.DbConnection;
 import by.valvik.banking.dao.ClientDao;
+import by.valvik.banking.dao.TransactionClientDao;
 import by.valvik.banking.dao.mapper.impl.ClientMapper;
 import by.valvik.banking.domain.Client;
 import by.valvik.banking.exception.DaoException;
@@ -10,9 +12,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class ClientDaoImpl implements ClientDao {
+public class ClientDaoImpl implements ClientDao, TransactionClientDao {
 
-    private static final ClientDao INSTANCE = new ClientDaoImpl();
+    private static final ClientDaoImpl INSTANCE = new ClientDaoImpl();
 
     private static final String GET_BY_ID = """
             SELECT number, pin, balance
@@ -33,11 +35,15 @@ public class ClientDaoImpl implements ClientDao {
 
     private static final String DELETE = "DELETE FROM cards WHERE id = ?";
 
+    private final DbConnection dbConnection;
+
     private final ClientMapper clientMapper;
 
     private final Executor executor;
 
     private ClientDaoImpl() {
+
+        dbConnection = DbConnection.getInstance();
 
         clientMapper = ClientMapper.getInstance();
 
@@ -46,9 +52,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Optional<Client> get(Connection connection, int id) throws DaoException {
+    public Optional<Client> get(int id) throws DaoException {
 
-        try {
+        try (Connection connection = dbConnection.get()){
 
             return executor.execute(connection, GET_BY_ID, clientMapper, id);
 
@@ -61,9 +67,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Optional<Client> get(Connection connection, String cardNumber) throws DaoException {
+    public Optional<Client> get(String cardNumber) throws DaoException {
 
-        try {
+        try(Connection connection = dbConnection.get()) {
 
             return executor.execute(connection, GET_BY_CARD_NUMBER, clientMapper, cardNumber);
 
@@ -76,9 +82,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void save(Connection connection, Client client) throws DaoException {
+    public void save(Client client) throws DaoException {
 
-        try {
+        try(Connection connection = dbConnection.get()) {
 
             executor.execute(connection, INSERT, client.card().hashCode(),
                                                  client.card().number(),
@@ -93,11 +99,26 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void delete(Connection connection, int id) throws DaoException {
+    public void delete(int id) throws DaoException {
 
-        try {
+        try(Connection connection = dbConnection.get()) {
 
             executor.execute(connection, DELETE, id);
+
+        } catch (SQLException e) {
+
+            throw new DaoException(e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public void updateBalance(int balance, int id) throws DaoException {
+
+        try(Connection connection = dbConnection.get()) {
+
+            updateBalance(connection, balance, id);
 
         } catch (SQLException e) {
 
@@ -122,7 +143,7 @@ public class ClientDaoImpl implements ClientDao {
 
     }
 
-    public static ClientDao getInstance() {
+    public static ClientDaoImpl getInstance() {
 
         return INSTANCE;
 

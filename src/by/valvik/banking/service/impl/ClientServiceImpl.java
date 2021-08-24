@@ -48,20 +48,20 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client get(Card card) throws ServiceException {
 
-        try (Connection connection = dbConnection.get()) {
+        try {
 
             if (Objects.nonNull(card.pin())) {
 
-                return clientDao.get(connection, card.hashCode())
+                return clientDao.get(card.hashCode())
                                 .orElseThrow(() -> new ServiceException(WRONG_CARD_NUMBER_OR_PIN));
 
             }
 
-            return clientDao.get(connection, card.number())
+            return clientDao.get(card.number())
                             .orElseThrow(() -> new ServiceException(SUCH_A_CARD_DOES_NOT_EXIST));
 
 
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException e) {
 
             throw new ServiceException(e.getMessage());
 
@@ -72,11 +72,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void save(Client client) throws ServiceException {
 
-        try (Connection connection = dbConnection.get()) {
+        try {
 
-            clientDao.save(connection, client);
+            clientDao.save(client);
 
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException e) {
 
             throw new ServiceException(e.getMessage());
 
@@ -87,11 +87,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void delete(Client client) throws ServiceException {
 
-        try (Connection connection = dbConnection.get()) {
+        try {
 
-            clientDao.delete(connection, client.hashCode());
+            clientDao.delete(client.hashCode());
 
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException e) {
 
             throw new ServiceException(e.getMessage());
 
@@ -102,13 +102,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deposit(Client client, int amount) throws ServiceException {
 
-        try (Connection connection = dbConnection.get()) {
+        try {
 
             Card card = client.addToBalance(amount);
 
-            clientDao.updateBalance(connection, card.balance(), card.hashCode());
+            clientDao.updateBalance(card.balance(), card.hashCode());
 
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException e) {
 
             throw new ServiceException(e.getMessage());
 

@@ -1,6 +1,6 @@
 package by.valvik.banking.service.impl;
 
-import by.valvik.banking.dao.ClientDao;
+import by.valvik.banking.dao.TransactionClientDao;
 import by.valvik.banking.dao.impl.ClientDaoImpl;
 import by.valvik.banking.domain.Card;
 import by.valvik.banking.exception.DaoException;
@@ -13,11 +13,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     private static final TransactionService INSTANCE = new TransactionServiceImpl();
 
-    private final ClientDao clientDao;
+    private final TransactionClientDao transactionClientDao;
 
     private TransactionServiceImpl() {
 
-        clientDao = ClientDaoImpl.getInstance();
+        transactionClientDao = ClientDaoImpl.getInstance();
 
     }
 
@@ -26,9 +26,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         try {
 
-            clientDao.updateBalance(connection, source.balance(), source.hashCode());
+            transactionClientDao.updateBalance(connection, source.balance(), source.hashCode());
 
-            clientDao.updateBalance(connection, target.balance(), target.hashCode());
+            transactionClientDao.updateBalance(connection, target.balance(), target.hashCode());
 
         } catch (DaoException e) {
 

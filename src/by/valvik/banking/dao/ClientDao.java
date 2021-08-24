@@ -8,14 +8,14 @@ import java.util.Optional;
 
 public interface ClientDao {
 
-    Optional<Client> get(Connection connection, int id) throws DaoException;
+    Optional<Client> get(int id) throws DaoException;
 
-    Optional<Client> get(Connection connection, String cardNumber) throws DaoException;
+    Optional<Client> get(String cardNumber) throws DaoException;
 
-    void save(Connection connection, Client client) throws DaoException;
+    void save(Client client) throws DaoException;
 
-    void delete(Connection connection, int id) throws DaoException;
+    void delete(int id) throws DaoException;
 
-    void updateBalance(Connection connection, int balance, int id) throws DaoException;
+    void updateBalance(int balance, int id) throws DaoException;
 
 }
