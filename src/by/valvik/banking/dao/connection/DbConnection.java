@@ -40,24 +40,6 @@ public class DbConnection {
 
     }
 
-    public void releaseConnection(Connection connection) throws DaoException {
-
-        if (connection != null) {
-
-            try {
-
-                connection.close();
-
-            } catch (SQLException e) {
-
-                throw new DaoException(e.getMessage());
-
-            }
-
-        }
-
-    }
-
     public static DbConnection getInstance() {
 
         return INSTANCE;
