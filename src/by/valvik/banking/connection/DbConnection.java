@@ -1,6 +1,5 @@
 package by.valvik.banking.connection;
 
-import by.valvik.banking.exception.DaoException;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
@@ -26,17 +25,9 @@ public class DbConnection {
 
     }
 
-    public Connection get() throws DaoException {
+    public Connection get() throws SQLException {
 
-        try {
-
-            return dataSource.getConnection();
-
-        } catch (SQLException e) {
-
-            throw new DaoException(e.getMessage());
-
-        }
+        return dataSource.getConnection();
 
     }
 

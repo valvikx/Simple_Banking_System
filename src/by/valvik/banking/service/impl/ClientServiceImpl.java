@@ -137,7 +137,7 @@ public class ClientServiceImpl implements ClientService {
 
             proxy.updateBalances(connection, updatedSourceCard, updatedTargetCard);
 
-        } catch (DaoException | SQLException e) {
+        } catch (SQLException e) {
 
             throw new ServiceException(e.getMessage());
 
